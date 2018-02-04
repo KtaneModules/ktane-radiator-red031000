@@ -3485,6 +3485,7 @@ MonoBehaviour:
   digitsFont: {fileID: 12800000, guid: 3d2e2ed63c7a0ed4cb4a7a6d1661e19e, type: 3}
   TwitchHelpMessage: Submit the temperature and water together with !{0} submit 12
     34
+  TwitchManualCode: https://ktane.timwi.de/HTML/Radiator.html
 --- !u!114 &114576814268564874
 MonoBehaviour:
   m_ObjectHideFlags: 1

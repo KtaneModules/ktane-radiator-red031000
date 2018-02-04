@@ -78,7 +78,7 @@ public class radiatorRed : MonoBehaviour {
         if (!generated)
         {
             serialOccurances = getSerialOccurances();
-            Debug.LogFormat("[Radiator #{0}] <Serial occurances: {1}>", _moduleId, serialOccurances);
+            Debug.LogFormat("[Radiator #{0}] Serial occurances: {1}.", _moduleId, serialOccurances);
             generateAnswer();
             Screen.GetComponent<Renderer>().material = digitsMat;
             Screen.font = digitsFont;
@@ -101,9 +101,9 @@ public class radiatorRed : MonoBehaviour {
         { //unicorn
             TemperatureAns = 13;
             WaterAns = 37;
-            Debug.LogFormat("[Radiator #{0}] <Answer is unicorn. Horay!>", _moduleId);
-            Debug.LogFormat("[Radiator #{0}] <Temperature answer: {1}.>", _moduleId, TemperatureAns);
-            Debug.LogFormat("[Radiator #{0}] <Water answer: {1}.>", _moduleId, WaterAns);
+            Debug.LogFormat("[Radiator #{0}] Answer is unicorn. Horay!", _moduleId);
+            Debug.LogFormat("[Radiator #{0}] Temperature answer: {1}.", _moduleId, TemperatureAns);
+            Debug.LogFormat("[Radiator #{0}] Water answer: {1}.", _moduleId, WaterAns);
         }
         else
         {
@@ -111,8 +111,8 @@ public class radiatorRed : MonoBehaviour {
             {
 
                 TemperatureAns += (10 * serialOccurances); //find every occurance of letters RADITO and add that * 10 to the number
-                Debug.LogFormat("[Radiator #{0}] <Added " + (10 * serialOccurances) + " to the temperature answer (serial occurances)>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Temperature is now {1}>", _moduleId, TemperatureAns);
+                Debug.LogFormat("[Radiator #{0}] Added " + (10 * serialOccurances) + " to the temperature answer (serial occurances).", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Temperature is now {1}.", _moduleId, TemperatureAns);
             }
 
             if (!KMBombInfoExtensions.GetBatteryCount(Info).Equals(0))
@@ -128,8 +128,8 @@ public class radiatorRed : MonoBehaviour {
                         TemperatureAns += 5;
                         NumAdded += 5;
                     }
-                    Debug.LogFormat("[Radiator #{0}] <Added {1} to the temperature answer (AA batteries)>", _moduleId, NumAdded);
-                    Debug.LogFormat("[Radiator #(0)] <Temperature is now {1}>", _moduleId, TemperatureAns);
+                    Debug.LogFormat("[Radiator #{0}] Added {1} to the temperature answer (AA batteries).", _moduleId, NumAdded);
+                    Debug.LogFormat("[Radiator #(0)] Temperature is now {1}.", _moduleId, TemperatureAns);
                 }
 
                 if (Dnum > 0)
@@ -139,8 +139,8 @@ public class radiatorRed : MonoBehaviour {
                         TemperatureAns -= 5;
                         NumTaken += 5;
                     }
-                    Debug.LogFormat("[Radiator #{0}] <Taken {1} from the temperature answer (D batteries)>", _moduleId, NumTaken);
-                    Debug.LogFormat("[Radiator #{0}] <Temperature is now {1}>", _moduleId, TemperatureAns);
+                    Debug.LogFormat("[Radiator #{0}] Taken {1} from the temperature answer (D batteries).", _moduleId, NumTaken);
+                    Debug.LogFormat("[Radiator #{0}] Temperature is now {1}.", _moduleId, TemperatureAns);
                 }
 
             }
@@ -148,67 +148,67 @@ public class radiatorRed : MonoBehaviour {
             if (TemperatureAns < 0)
             {
                 TemperatureAns *= -1; //multiply by -1 to make it positive
-                Debug.LogFormat("[Radiator #{0}] <Temperature answer is negative, multiplying by -1 to make it positive>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Temparature answer is now {1}>", _moduleId, TemperatureAns);
+                Debug.LogFormat("[Radiator #{0}] Temperature answer is negative, multiplying by -1 to make it positive.", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Temparature answer is now {1}.", _moduleId, TemperatureAns);
    
             }
 
             //water answer
 
             WaterAns = (int) (TemperatureAns / 3); //for the initial water answer, cast to int to avoid horrible decimals
-            Debug.LogFormat("[Radiator #{0}] <Initial water value is {1}>", _moduleId, WaterAns);
+            Debug.LogFormat("[Radiator #{0}] Initial water value is {1}.", _moduleId, WaterAns);
 
             if(KMBombInfoExtensions.IsPortPresent(Info, Port.RJ45))
             {
                 WaterAns += 50; //add 50 for RJ-45
-                Debug.LogFormat("[Radiator #{0}] <Adding 50 to the water value (RJ-45)>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Water answer is now {1}>", _moduleId, WaterAns);
+                Debug.LogFormat("[Radiator #{0}] Adding 50 to the water value (RJ-45).", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
 
             if(Info.GetOnIndicators().Any())
             {
                 WaterAns += 20; //add 20 for any lit indicators
-                Debug.LogFormat("[Radiator #{0}] <Adding 20 to the water value (lit indicators)>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Water answer is now {1}>", _moduleId, WaterAns);
+                Debug.LogFormat("[Radiator #{0}] Adding 20 to the water value (lit indicators).", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
 
             //indicator table
             if(Info.IsIndicatorOff(Indicator.BOB))
             {
                 WaterAns += 40; //add 40 for unlit bob
-                Debug.LogFormat("[Radiator #{0}] <Adding 40 to the water value (unlit BOB)>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Water answer is now {1}>", _moduleId, WaterAns);
+                Debug.LogFormat("[Radiator #{0}] Adding 40 to the water value (unlit BOB).", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
             if (Info.IsIndicatorOff(Indicator.NSA))
             {
                 WaterAns -= 10; //subtract 10 for unlit nsa
-                Debug.LogFormat("[Radiator #{0}] <Taking 10 from the water value (unlit BOB)>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Water answer is now {1}>", _moduleId, WaterAns);
+                Debug.LogFormat("[Radiator #{0}] Taking 10 from the water value (unlit BOB).", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
             if (Info.IsIndicatorOff(Indicator.FRQ))
             {
                 WaterAns += 2; //add 2 for unlit frq
-                Debug.LogFormat("[Radiator #{0}] <Adding 2 to the water value (unlit FRQ)>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Water answer is now {1}>", _moduleId, WaterAns);
+                Debug.LogFormat("[Radiator #{0}] Adding 2 to the water value (unlit FRQ).", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
             if (Info.IsIndicatorOff(Indicator.MSA))
             {
                 WaterAns += 25; //add 25 for unlit msa
-                Debug.LogFormat("[Radiator #{0}] <Adding 25 to the water value (unlit MSA)>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Water answer is now {1}>", _moduleId, WaterAns);
+                Debug.LogFormat("[Radiator #{0}] Adding 25 to the water value (unlit MSA).", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
             if (Info.IsIndicatorOff(Indicator.FRK))
             {
                 WaterAns -= 1; //subtract 1 for unlit frk
-                Debug.LogFormat("[Radiator #{0}] <Taking 1 from the water value (unlit FRK)>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Water answer is now {1}>", _moduleId, WaterAns);
+                Debug.LogFormat("[Radiator #{0}] Taking 1 from the water value (unlit FRK).", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
 
             if (WaterAns < 0)
             {
                 WaterAns *= -1; //multiply by -1 to make it positive
-                Debug.LogFormat("[Radiator #{0}] <Water answer is negative, multiplying by -1 to make it positive>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Water answer is now {1}>", _moduleId, WaterAns);
+                Debug.LogFormat("[Radiator #{0}] Water answer is negative, multiplying by -1 to make it positive.", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
 
             //final clean up
@@ -221,8 +221,8 @@ public class radiatorRed : MonoBehaviour {
             {
                 TemperatureAns %= 100;
             }
-            Debug.LogFormat("[Radiator #{0}] <Final answer for temperature is {1}>", _moduleId, TemperatureAns);
-            Debug.LogFormat("[Radiator #{0}] <Final answer for water is {1}>", _moduleId, WaterAns);
+            Debug.LogFormat("[Radiator #{0}] Final answer for temperature is {1}.", _moduleId, TemperatureAns);
+            Debug.LogFormat("[Radiator #{0}] Final answer for water is {1}.", _moduleId, WaterAns);
 
             generated = true;
         }
@@ -259,17 +259,17 @@ public class radiatorRed : MonoBehaviour {
             {
                 TemperatureInput /= 10;
             }
-            Debug.LogFormat("[Radiator #{0}] <Temperature: recieved {1}, expected {2}>", _moduleId, TemperatureInput, TemperatureAns);
+            Debug.LogFormat("[Radiator #{0}] Temperature: recieved {1}, expected {2}.", _moduleId, TemperatureInput, TemperatureAns);
             if (TemperatureInput == TemperatureAns)
             {
-                Debug.LogFormat("[Radiator #{0}] <Temperature correct!>", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Temperature correct!", _moduleId);
                 stage = 2;
                 Screen.text = "";
                 Screen.color = new Color32(0, 255, 255, 255); //Set text to cyan for water
                 digits = 0;
             } else
             {
-                Debug.LogFormat("[Radiator #{0}] <Temperature incorrect, Strike>", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Temperature incorrect, Strike.", _moduleId);
                 Module.HandleStrike();
                 Init();
             }
@@ -279,18 +279,18 @@ public class radiatorRed : MonoBehaviour {
             {
                 WaterInput /= 10;
             }
-            Debug.LogFormat("[Radiator #{0}] <Water: recieved {1}, expected {2}>", _moduleId, WaterInput, WaterAns);
+            Debug.LogFormat("[Radiator #{0}] Water: recieved {1}, expected {2}.", _moduleId, WaterInput, WaterAns);
 
             if (WaterInput == WaterAns)
             {
-                Debug.LogFormat("[Radiator #{0}] <Water correct!>", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] <Module passed>", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water correct!", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Module passed.", _moduleId);
                 Screen.text = "";
                 Module.HandlePass();
                 _isSolved = true;
             } else
             {
-                Debug.LogFormat("[Radiator #{0}] <Water incorrect, Strike>", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Water incorrect, Strike.", _moduleId);
                 Module.HandleStrike();
                 Init();
             }
@@ -332,7 +332,7 @@ public class radiatorRed : MonoBehaviour {
     }
 
 
-    public string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. reset with !{0} reset";
+    public string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. Reset with !{0} reset. NOTE: add a 0 before the number if the number is less than 10. e.g. 09";
     public string TwitchManualCode = "https://ktane.timwi.de/HTML/Radiator.html";
     KMSelectable[] ProcessTwitchCommand(string command)
     {
@@ -350,7 +350,7 @@ public class radiatorRed : MonoBehaviour {
         return null;
     }
     // Update is called once per frame
-    void Update () {
+    void Update () { /*TODO remove*/
 		
 	}
 }

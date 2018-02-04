@@ -333,6 +333,7 @@ public class radiatorRed : MonoBehaviour {
 
 
     public string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. reset with !{0} reset";
+    public string TwitchManualCode = "https://ktane.timwi.de/HTML/Radiator.html";
     KMSelectable[] ProcessTwitchCommand(string command)
     {
         command = command.ToLowerInvariant().Trim();

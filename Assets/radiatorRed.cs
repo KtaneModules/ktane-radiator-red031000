@@ -32,7 +32,7 @@ public class radiatorRed : MonoBehaviour {
 
     private int getSerialOccurances()
     {
-        int occur = Info.GetSerialNumber().Count("RADI4TO7".Contains); //get every occurance of the string RADI4TO7 in the serial number
+        int occur = Info.GetSerialNumber().Count("RADI4T07".Contains); //get every occurance of the string RADI4T07 in the serial number
         return occur;
     }
 

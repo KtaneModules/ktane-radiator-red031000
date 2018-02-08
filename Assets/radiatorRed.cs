@@ -4,6 +4,7 @@ using UnityEngine;
 using Radiator;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System;
 
 public class radiatorRed : MonoBehaviour {
 
@@ -332,16 +333,35 @@ public class radiatorRed : MonoBehaviour {
     }
 
 
-    public string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. Reset with !{0} reset. NOTE: add a 0 before the number if the number is less than 10. e.g. 09";
+    public string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. Reset with !{0} reset.";
     public string TwitchManualCode = "https://ktane.timwi.de/HTML/Radiator.html";
     KMSelectable[] ProcessTwitchCommand(string command)
     {
         command = command.ToLowerInvariant().Trim();
+        string[] split = command.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); //split the string so we can handle temperature and water seperately
 
-        if (Regex.IsMatch(command, @"^submit +\d\d +\d\d$")) //# Submit 12 34
+        if (Regex.IsMatch(command, @"^submit [0-9]{1,2} [0-9]{1,2}$")) //# Submit 12 34
         {
+            KMSelectable[] TempButtons;
+            KMSelectable[] WaterButtons;
             command = command.Substring(7).Trim();
-            return new[] { NumpadPress[int.Parse(command[0].ToString())], NumpadPress[int.Parse(command[1].ToString())], Submit, NumpadPress[int.Parse(command[3].ToString())], NumpadPress[int.Parse(command[4].ToString())], Submit };
+            if (split[1].Length == 2)
+            {
+                TempButtons = new KMSelectable[] { NumpadPress[int.Parse(split[1][0].ToString())], NumpadPress[int.Parse(split[1][1].ToString())], Submit };
+            } else
+            {
+                TempButtons = new KMSelectable[] { NumpadPress[int.Parse(split[1][0].ToString())], Submit };
+            }
+
+            if (split[2].Length == 2)
+            {
+                WaterButtons = new KMSelectable[] { NumpadPress[int.Parse(split[2][0].ToString())], NumpadPress[int.Parse(split[2][1].ToString())], Submit };
+            } else
+            {
+                WaterButtons = new KMSelectable[] { NumpadPress[int.Parse(split[2][0].ToString())], Submit };
+            }
+            KMSelectable[] presses = TempButtons.Concat(WaterButtons).ToArray(); //join the two arrays using linq
+            return presses;
         } else if (command == "reset")
         {
             return new[] { Reset };

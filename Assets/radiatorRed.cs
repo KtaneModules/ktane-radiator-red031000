@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System;
 
 public class radiatorRed : MonoBehaviour {
-
+    #region GlobalVariables
     public KMBombModule Module;
     public KMBombInfo Info;
     public KMSelectable[] NumpadPress;
@@ -31,6 +31,8 @@ public class radiatorRed : MonoBehaviour {
 
     private bool _isSolved = false, _lightsOn = false;
 
+    #endregion
+    #region AnswerCalculation
     private int getSerialOccurances()
     {
         int occur = Info.GetSerialNumber().Count("RADI4T07".Contains); //get every occurance of the string RADI4T07 in the serial number
@@ -228,7 +230,8 @@ public class radiatorRed : MonoBehaviour {
             generated = true;
         }
     }
-    
+    #endregion
+    #region ButtonHandlers
     void resetHandler()
     {
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Reset.transform);
@@ -331,10 +334,12 @@ public class radiatorRed : MonoBehaviour {
 
         digits++;
     }
-
-
-    public string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. Reset with !{0} reset.";
-    public string TwitchManualCode = "https://ktane.timwi.de/HTML/Radiator.html";
+    #endregion
+    #region TwitchPlays
+#pragma warning disable 414
+    private string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. Reset with !{0} reset.";
+    private string TwitchManualCode = "Radiator";
+#pragma warning restore 414
     KMSelectable[] ProcessTwitchCommand(string command)
     {
         command = command.ToLowerInvariant().Trim();
@@ -369,4 +374,5 @@ public class radiatorRed : MonoBehaviour {
 
         return null;
     }
+    #endregion
 }

@@ -31,6 +31,6 @@ MonoBehaviour:
     Manual located here: https://www.dropbox.com/s/6m3mb0nc728434g/Radiator.pdf?dl=0
 
 '
-  version: 1.6
+  version: 1.7
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 49fc337042f4f464da96d56390ca1bcc, type: 3}

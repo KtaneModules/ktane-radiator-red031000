@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Radiator;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System;
 
-public class radiatorRed : MonoBehaviour {
+public class RadiatorRed : MonoBehaviour {
     #region GlobalVariables
     public KMBombModule Module;
     public KMBombInfo Info;
@@ -14,26 +12,27 @@ public class radiatorRed : MonoBehaviour {
     public KMSelectable Reset, Submit;
     public TextMesh Screen;
     public KMAudio Audio;
-    public Material digitsMat;
-    public Font digitsFont;
+    public Material DigitsMat;
+    public Font DigitsFont;
 
     private int WaterAns = 0;
     private int TemperatureAns = 0;
     private int WaterInput = 0;
     private int TemperatureInput = 0;
-    private int stage = 1;
-    private int digits = 0;
-    private bool generated = false;
+    private int Stage = 1;
+    private int Digits = 0;
+    private bool Generated = false;
 
     private static int _moduleIdCounter = 1;
     private int _moduleId = 0;
-    private int serialOccurances = 0;
+    private int SerialOccurances = 0;
 
     private bool _isSolved = false, _lightsOn = false;
 
     #endregion
-    #region AnswerCalculation
-    private int getSerialOccurances()
+
+    #region Answer Calculation
+    private int GetSerialOccurances()
     {
         int occur = Info.GetSerialNumber().Count("RADI4T07".Contains); //get every occurance of the string RADI4T07 in the serial number
         return occur;
@@ -50,12 +49,12 @@ public class radiatorRed : MonoBehaviour {
     {
         Reset.OnInteract += delegate ()
         {
-            resetHandler();
+            ResetHandler();
             return false;
         };
         Submit.OnInteract += delegate ()
         {
-            submitHandler();
+            SubmitHandler();
             return false;
         };
         for (int i = 0; i < 10; i++)
@@ -63,7 +62,7 @@ public class radiatorRed : MonoBehaviour {
             int b = i;
             NumpadPress[i].OnInteract += delegate ()
             {
-                numPadHandler(b);
+                NumPadHandler(b);
                 return false;
             };
         }
@@ -78,24 +77,24 @@ public class radiatorRed : MonoBehaviour {
 
     void Init()
     {
-        if (!generated)
+        if (!Generated)
         {
-            serialOccurances = getSerialOccurances();
-            Debug.LogFormat("[Radiator #{0}] Serial occurances: {1}.", _moduleId, serialOccurances);
-            generateAnswer();
-            Screen.GetComponent<Renderer>().material = digitsMat;
-            Screen.font = digitsFont;
+            SerialOccurances = GetSerialOccurances();
+            Debug.LogFormat("[Radiator #{0}] Serial occurances: {1}.", _moduleId, SerialOccurances);
+            GenerateAnswer();
+            Screen.GetComponent<Renderer>().material = DigitsMat;
+            Screen.font = DigitsFont;
         }
         //reset
         WaterInput = 0;
         TemperatureInput = 0;
-        stage = 1;
+        Stage = 1;
         Screen.color = new Color32(255, 0, 0, 255); //Set text back to red
         Screen.text = "";
-        digits = 0;
+        Digits = 0;
     }
 
-    void generateAnswer() //generate the answer
+    void GenerateAnswer() //generate the answer
     {
         
         //temperature answer
@@ -110,11 +109,11 @@ public class radiatorRed : MonoBehaviour {
         }
         else
         {
-            if (serialOccurances != 0)
+            if (SerialOccurances != 0)
             {
 
-                TemperatureAns += (10 * serialOccurances); //find every occurance of letters RADITO and add that * 10 to the number
-                Debug.LogFormat("[Radiator #{0}] Added " + (10 * serialOccurances) + " to the temperature answer (serial occurances).", _moduleId);
+                TemperatureAns += (10 * SerialOccurances); //find every occurance of letters RADITO and add that * 10 to the number
+                Debug.LogFormat("[Radiator #{0}] Added " + (10 * SerialOccurances) + " to the temperature answer (serial occurances).", _moduleId);
                 Debug.LogFormat("[Radiator #{0}] Temperature is now {1}.", _moduleId, TemperatureAns);
             }
 
@@ -227,39 +226,40 @@ public class radiatorRed : MonoBehaviour {
             Debug.LogFormat("[Radiator #{0}] Final answer for temperature is {1}.", _moduleId, TemperatureAns);
             Debug.LogFormat("[Radiator #{0}] Final answer for water is {1}.", _moduleId, WaterAns);
 
-            generated = true;
+            Generated = true;
         }
     }
     #endregion
-    #region ButtonHandlers
-    void resetHandler()
+
+    #region Button Handlers
+    void ResetHandler()
     {
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Reset.transform);
         Reset.AddInteractionPunch();
 
         if (!_lightsOn || _isSolved) return;
 
-        if (stage == 1)
+        if (Stage == 1)
         {
             TemperatureInput = 0;
             Screen.text = "";
-            digits = 0;
-        } else if (stage == 2)
+            Digits = 0;
+        } else if (Stage == 2)
         {
             WaterInput = 0;
             Screen.text = "";
-            digits = 0;
+            Digits = 0;
         }
     }
-    void submitHandler()
+    void SubmitHandler()
     {
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Submit.transform);
         Submit.AddInteractionPunch();
 
         if (!_lightsOn || _isSolved) return;
-        if (stage == 1)
+        if (Stage == 1)
         {
-            if (digits == 1) //if there is only one digit, interpret it as a 1 rather than 10, for example
+            if (Digits == 1) //if there is only one digit, interpret it as a 1 rather than 10, for example
             {
                 TemperatureInput /= 10;
             }
@@ -267,19 +267,19 @@ public class radiatorRed : MonoBehaviour {
             if (TemperatureInput == TemperatureAns)
             {
                 Debug.LogFormat("[Radiator #{0}] Temperature correct!", _moduleId);
-                stage = 2;
+                Stage = 2;
                 Screen.text = "";
                 Screen.color = new Color32(0, 255, 255, 255); //Set text to cyan for water
-                digits = 0;
+                Digits = 0;
             } else
             {
                 Debug.LogFormat("[Radiator #{0}] Temperature incorrect, Strike.", _moduleId);
                 Module.HandleStrike();
                 Init();
             }
-        } else if (stage == 2)
+        } else if (Stage == 2)
         {
-            if (digits == 1)
+            if (Digits == 1)
             {
                 WaterInput /= 10;
             }
@@ -300,42 +300,43 @@ public class radiatorRed : MonoBehaviour {
             }
         }
     }
-    void numPadHandler(int b)
+    void NumPadHandler(int b)
     {
         Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, NumpadPress[b].transform);
         NumpadPress[b].AddInteractionPunch();
 
-        if (!_lightsOn || _isSolved || digits > 1) return;
+        if (!_lightsOn || _isSolved || Digits > 1) return;
 
-        if (stage == 1)
+        if (Stage == 1)
         {
-            if (digits == 0)
+            if (Digits == 0)
             {
                 TemperatureInput += (b * 10);
                 Screen.text = (TemperatureInput / 10).ToString();
-            } else if (digits == 1)
+            } else if (Digits == 1)
             {
                 TemperatureInput += b;
                 Screen.text = TemperatureInput.ToString();
             }
-        } else if (stage == 2)
+        } else if (Stage == 2)
         {
-            if (digits == 0)
+            if (Digits == 0)
             {
                 WaterInput += (b * 10);
                 Screen.text = (WaterInput / 10).ToString();
             }
-            else if (digits == 1)
+            else if (Digits == 1)
             {
                 WaterInput += b;
                 Screen.text = WaterInput.ToString();
             }
         }
 
-        digits++;
+        Digits++;
     }
     #endregion
-    #region TwitchPlays
+
+    #region Twitch Plays
 #pragma warning disable 414
     private string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. Reset with !{0} reset.";
     private string TwitchManualCode = "Radiator";
@@ -345,7 +346,7 @@ public class radiatorRed : MonoBehaviour {
         command = command.ToLowerInvariant().Trim();
         string[] split = command.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); //split the string so we can handle temperature and water seperately
 
-        if (Regex.IsMatch(command, @"^submit [0-9]{1,2} [0-9]{1,2}$")) //# Submit 12 34
+        if (Regex.IsMatch(command, @"^submit [0-9]{1,2} [0-9]{1,2}$")) //!# Submit 12 34
         {
             KMSelectable[] TempButtons;
             KMSelectable[] WaterButtons;
@@ -374,5 +375,5 @@ public class radiatorRed : MonoBehaviour {
 
         return null;
     }
-    #endregion
+	#endregion
 }

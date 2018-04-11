@@ -3018,7 +3018,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114109390477514636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3239,7 +3239,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114382986435341862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3252,7 +3252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114399099668123590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3278,7 +3278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - Standard
+  - KT/Mobile/DiffuseTint
 --- !u!114 &114410999972273034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3304,7 +3304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114431846471761112
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3330,7 +3330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114443586177734446
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3343,7 +3343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114454489907145598
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3356,7 +3356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114473727793248646
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3404,7 +3404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114513810057540074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3481,11 +3481,8 @@ MonoBehaviour:
   Submit: {fileID: 114857470338272928}
   Screen: {fileID: 102840953118404898}
   Audio: {fileID: 114053502894448944}
-  digitsMat: {fileID: 2100000, guid: 7271e41b949eb67428b3a409a8b1aeae, type: 2}
-  digitsFont: {fileID: 12800000, guid: 3d2e2ed63c7a0ed4cb4a7a6d1661e19e, type: 3}
-  TwitchHelpMessage: Submit the temperature and water together with !{0} submit 12
-    34
-  TwitchManualCode: https://ktane.timwi.de/HTML/Radiator.html
+  DigitsMat: {fileID: 2100000, guid: 7271e41b949eb67428b3a409a8b1aeae, type: 2}
+  DigitsFont: {fileID: 12800000, guid: 3d2e2ed63c7a0ed4cb4a7a6d1661e19e, type: 3}
 --- !u!114 &114576814268564874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3581,7 +3578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114708402863148712
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3607,7 +3604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114725440866634810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3620,7 +3617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114755215333073852
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3725,7 +3722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114864362257191056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3798,7 +3795,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShaderNames:
-  - GUI/Text Shader
+  - GUI/KT 3D Text
 --- !u!114 &114960451424533888
 MonoBehaviour:
   m_ObjectHideFlags: 1

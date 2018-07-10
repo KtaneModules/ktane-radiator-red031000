@@ -3,6 +3,8 @@ using Radiator;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System;
+using System.Collections.Generic;
+using System.Collections;
 
 public class RadiatorRed : MonoBehaviour {
     #region GlobalVariables
@@ -375,5 +377,27 @@ public class RadiatorRed : MonoBehaviour {
 
         return null;
     }
+	private IEnumerator TwitchHandleForcedSolve()
+	{
+		if (!_isSolved)
+		{
+			Debug.LogFormat("[Radiator #{0}] Module forcibly solved", _moduleId);
+			yield return null;
+			IEnumerable<int> TempAnsEnumberable = TemperatureAns.ToString().Select(digit => int.Parse(digit.ToString())); //take advantage of the fact that string has an enumerator
+			IEnumerable<int> WaterAnsEnumberable = WaterAns.ToString().Select(digit => int.Parse(digit.ToString()));
+			foreach (int digit in TempAnsEnumberable)
+			{
+				NumPadHandler(digit);
+				yield return new WaitForSeconds(0.1f); //0.1 seconds is the normal delay
+			}
+			SubmitHandler();
+			foreach (int digit in WaterAnsEnumberable)
+			{
+				NumPadHandler(digit);
+				yield return new WaitForSeconds(0.1f);
+			}
+			SubmitHandler();
+		}
+	}
 	#endregion
 }

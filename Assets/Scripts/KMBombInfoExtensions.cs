@@ -44,7 +44,8 @@ namespace Radiator
         MSA,
         TRN,
         BOB,
-        FRK
+        FRK,
+		NLL
     }
 
     public enum IndicatorColor

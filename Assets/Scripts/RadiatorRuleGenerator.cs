@@ -16,7 +16,14 @@ namespace Assets.Scripts.RuleGenerator
 
 		public override void CreateRules()
 		{
-			//create rules here
+			if (!Initialized)
+				throw new Exception("You must initialize the Random number generator first");
+
+			/*switch (Seed)
+			{
+				case 1:
+
+			}*/
 		}
 
 		public override string GetHTMLManual(out string filename)

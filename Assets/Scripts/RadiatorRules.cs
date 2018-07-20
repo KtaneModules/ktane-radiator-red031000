@@ -164,6 +164,10 @@ namespace Assets.Scripts.RuleGenerator
 
 		public class Indicators : Widget
 		{
+			public Indicators()
+			{
+				WidgetType = WidgetType.Indicator;
+			}
 			/// <summary>
 			/// The name of the indicator.
 			/// </summary>
@@ -181,29 +185,83 @@ namespace Assets.Scripts.RuleGenerator
 			/// </summary>
 			/// <remarks>This will be white if the indicator is lit, and it will be black if it is unlit.</remarks>
 			public IndicatorColor IndicatorColor;
+
+			public override string ToString()
+			{
+				if (IndicatorState == IndicatorState.Colored)
+				{
+					return IndicatorColor.ToString() + " " + IndicatorName.ToString();
+				} else if (IndicatorState == IndicatorState.Lit)
+				{
+					return "lit " + IndicatorName.ToString();
+				} else if (IndicatorState == IndicatorState.Unlit)
+				{
+					return "unlit " + IndicatorName.ToString();
+				}
+				else
+					return base.ToString();
+			}
 		}
 
 		public class Ports : Widget
 		{
+			public Ports()
+			{
+				WidgetType = WidgetType.Port;
+			}
 			/// <summary>
 			/// The name of the port.
 			/// </summary>
 			/// <example>Port.Serial</example>
 			public Port PortName;
+			public override string ToString()
+			{
+				switch (PortName)
+				{
+					case Port.RJ45:
+						return "RJ-45";
+					case Port.StereoRCA:
+						return "Stereo RCA";
+					case Port.PS2:
+						return "PS/2";
+					case Port.ComponentVideo:
+						return "Component Video";
+					case Port.CompositeVideo:
+						return "Composite Video";
+					default:
+						return PortName.ToString();
+				}
+			}
 		}
 
 		public class Batteries : Widget
 		{
+			public Batteries()
+			{
+				WidgetType = WidgetType.Batteries;
+			}
 			/// <summary>
 			/// The name of the battery.
 			/// </summary>
 			/// <example>Battery.D</example>
 			public Battery BatteryName;
+			public override string ToString()
+			{
+				return BatteryName.ToString();
+			}
 		}
 
 		public class TwoFactor : Widget
 		{
-			//no extra stuff needed, as we don't need the two factor code.
+			public TwoFactor()
+			{
+				WidgetType = WidgetType.TwoFactor;
+			}
+
+			public override string ToString()
+			{
+				return "Two Factor Code";
+			}
 		}
 
 		public class Widget
@@ -212,6 +270,94 @@ namespace Assets.Scripts.RuleGenerator
 			/// The type of Widget.
 			/// </summary>
 			public WidgetType WidgetType;
+		}
+
+		public RadiatorRules(int seed)
+		{
+			switch (seed)
+			{
+				case 1:
+					InitializeDefaults();
+					break;
+				default:
+					//init seeds here
+					break;
+			}
+		}
+
+		private void InitializeDefaults()
+		{
+			RuleGeneratorSeed = 1;
+			UnicornIndicator1 = new Indicators()
+			{
+				IndicatorName = Indicator.FRK,
+				IndicatorState = IndicatorState.Lit
+			};
+			UnicornIndicator2 = new Indicators()
+			{
+				IndicatorName = Indicator.BOB,
+				IndicatorState = IndicatorState.Lit
+			};
+			UnicornTempValue = 13;
+			UnicornWaterValue = 37;
+			SerialNumberLetters = SerialNumberOptions[0];
+			TempSerialAmount = 10;
+			AddToNumberObject = new Batteries()
+			{
+				BatteryName = Battery.AA
+			};
+			AddToNumberAmount = 5;
+			TakeFromNumberObject = new Batteries()
+			{
+				BatteryName = Battery.D
+			};
+			TakeFromNumberAmount = 5;
+			WaterInitialOperation = Operation.Division;
+			WaterInitialAmount = 3;
+			WaterAddToNumberLargeObject = new Ports()
+			{
+				PortName = Port.RJ45
+			};
+			WaterAddToNumberLAmount = 50;
+			WaterAddToNumberSmallObject = new Indicators()
+			{
+				IndicatorState = IndicatorState.Lit
+			};
+			WaterAddToNumberSAmount = 20;
+			TableObject = new Indicators()
+			{
+				IndicatorState = IndicatorState.Unlit
+			};
+			TableObject1 = new Indicators()
+			{
+				IndicatorName = Indicator.BOB,
+				IndicatorState = IndicatorState.Unlit
+			};
+			TableObject2 = new Indicators()
+			{
+				IndicatorName = Indicator.NSA,
+				IndicatorState = IndicatorState.Unlit
+			};
+			TableObject3 = new Indicators()
+			{
+				IndicatorName = Indicator.FRQ,
+				IndicatorState = IndicatorState.Unlit
+			};
+			TableObject4 = new Indicators()
+			{
+				IndicatorName = Indicator.MSA,
+				IndicatorState = IndicatorState.Unlit
+			};
+			TableObject5 = new Indicators()
+			{
+				IndicatorName = Indicator.FRK,
+				IndicatorState = IndicatorState.Unlit
+			};
+			TableObject1Value = 40;
+			TableObject2Value = -10;
+			TableObject3Value = 2;
+			TableObject4Value = 25;
+			TableObject5Value = -1;
 		}
 	}
 
@@ -245,6 +391,8 @@ namespace Assets.Scripts.RuleGenerator
 		Subtraction,
 		Multiplication,
 		Division,
-		Modulo
+		Modulo,
+		Squared,
+		SquareRoot,
 	}
 }

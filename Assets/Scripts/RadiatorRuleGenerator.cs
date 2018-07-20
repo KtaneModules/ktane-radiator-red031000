@@ -4,6 +4,8 @@ namespace Assets.Scripts.RuleGenerator
 {
 	public partial class RadiatorRuleGenerator : AbstractRuleGenerator
 	{
+		public RadiatorRules rules;
+
 		public static RadiatorRuleGenerator Instance
 		{
 			get { return (RadiatorRuleGenerator)GetInstance<RadiatorRuleGenerator>(); }
@@ -18,12 +20,8 @@ namespace Assets.Scripts.RuleGenerator
 		{
 			if (!Initialized)
 				throw new Exception("You must initialize the Random number generator first");
-
-			/*switch (Seed)
-			{
-				case 1:
-
-			}*/
+			rules = new RadiatorRules(Seed);
+			RulesGenerated = true;
 		}
 
 		public override string GetHTMLManual(out string filename)
@@ -34,7 +32,8 @@ namespace Assets.Scripts.RuleGenerator
 			if (!RulesGenerated)
 				throw new Exception("You must generate the rules first");
 
-			return new RadiatorManual().Manual.Replace("RULEGENERATORSEED", Seed.ToString()); //add replaces here once RNG has been implemented
+			return new RadiatorManual().Manual.Replace("RULEGENERATORSEED", Seed.ToString()).Replace("UNICORNINDICATOR1", rules.UnicornIndicator1.ToString())
+				.Replace("UNICORNINDICATOR2", rules.UnicornIndicator2.ToString()); //add replaces here once RNG has been implemented
 		}
 
 		public override string[] GetTextFiles(out string[] textFilePaths)

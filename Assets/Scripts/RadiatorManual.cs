@@ -38,7 +38,7 @@ namespace Assets.Scripts.RuleGenerator
 			"               <p>This module has 2 stages. The temperature stage and the water stage. You will need to keep the value of the temperature stage to work out the value of the water stage.</p>" +
 			"                <p>Submit the temperature stage before the water stage. If you make a mistake, press the reset button.</p>" +
 			"                <p>If the number is not correct for that stage, a strike will be given, and the module must be started over.</p>" +
-			"                <p><strong>HOWEVER</strong>, if a UNICORNINDICATOR1STATE UNICORNINDICATOR1 indicator and a UNICORNINDICATOR2STATE UNICORNINDICATOR2 indicator are present, submit UNICORNTEMPVALUE for the temperature and UNICORNWATERVALUE for the water.</p>" + //TODO: add the option of ports/batteries in the future
+			"                <p><strong>HOWEVER</strong>, if a UNICORNINDICATOR1 indicator and a UNICORNINDICATOR2 indicator are present, submit UNICORNTEMPVALUE for the temperature and UNICORNWATERVALUE for the water.</p>" + //TODO: add the option of ports/batteries in the future
 			"                <p>If a number is greater than 99, only use the last two digits of the number.</p>" +
 			"" +
 			"                <table>" +

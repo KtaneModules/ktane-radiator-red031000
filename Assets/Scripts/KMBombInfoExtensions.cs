@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Radiator
+namespace KModkit
 {
     public enum Battery
     {
@@ -45,7 +45,7 @@ namespace Radiator
         TRN,
         BOB,
         FRK,
-		NLL
+        NLL
     }
 
     public enum IndicatorColor

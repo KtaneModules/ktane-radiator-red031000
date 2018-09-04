@@ -25,8 +25,9 @@ public class RadiatorRed : MonoBehaviour {
     private int Stage = 1;
     private int Digits = 0;
     private bool Generated = false;
+	MonoRandom rnd;
 
-    private static int _moduleIdCounter = 1;
+	private static int _moduleIdCounter = 1;
     private int _moduleId = 0;
     private int SerialOccurances = 0;
 
@@ -53,11 +54,11 @@ public class RadiatorRed : MonoBehaviour {
         return occur;
     }
 
-
     // Use this for initialization
     void Start () {
         _moduleId = _moduleIdCounter++;
-		MonoRandom rnd = RuleSeedable.GetRNG();
+		rnd = RuleSeedable.GetRNG();
+		UsesVanillaRuleModifierAPI = rnd.Seed != 1;
 		if (rnd.Seed == 1)
 		{
 			LitIndicators = new Indicator[] { Indicator.FRK, Indicator.BOB, Indicator.CAR, Indicator.CLR, Indicator.FRQ, Indicator.IND, Indicator.MSA, Indicator.NLL, Indicator.NSA, Indicator.SIG, Indicator.SND, Indicator.TRN };
@@ -97,7 +98,12 @@ public class RadiatorRed : MonoBehaviour {
 		char[] chars = new char[stringLength];
 		for (int i = 0; i < stringLength; i++)
 		{
-			chars[i] = possibleChars[rnd.Next(0, possibleChars.Length)];
+			char character = possibleChars[rnd.Next(0, possibleChars.Length)];
+			while (chars.Contains(character))
+			{
+				character = possibleChars[rnd.Next(0, possibleChars.Length)];
+			}
+			chars[i] = character;
 		}
 		return new string(chars);
 	}
@@ -178,8 +184,8 @@ public class RadiatorRed : MonoBehaviour {
             {
                 int NumAdded = 0;
                 int NumTaken = 0;
-                int AAnum = Info.GetBatteryHolderCount(BatteryOrder[0]);
-                int Dnum = Info.GetBatteryHolderCount(BatteryOrder[1]);
+                int AAnum = Info.GetBatteryHolderCount(BatteryOrder[1]);
+                int Dnum = Info.GetBatteryHolderCount(BatteryOrder[0]);
                 if (AAnum > 0)
                 {
                     for (int i = 0; i < AAnum; i++) //add for AA
@@ -187,7 +193,7 @@ public class RadiatorRed : MonoBehaviour {
                         TemperatureAns += BatteryAddAmount;
                         NumAdded += BatteryAddAmount;
                     }
-                    Debug.LogFormat("[Radiator #{0}] Added {1} to the temperature answer (AA batteries).", _moduleId, NumAdded);
+                    Debug.LogFormat("[Radiator #{0}] Added {1} to the temperature answer ({2} batteries).", _moduleId, NumAdded, BatteryOrder[1].ToString());
                     Debug.LogFormat("[Radiator #(0)] Temperature is now {1}.", _moduleId, TemperatureAns);
                 }
 
@@ -198,7 +204,7 @@ public class RadiatorRed : MonoBehaviour {
                         TemperatureAns -= BatterySubtractAmount;
                         NumTaken += BatterySubtractAmount;
                     }
-                    Debug.LogFormat("[Radiator #{0}] Taken {1} from the temperature answer (D batteries).", _moduleId, NumTaken);
+                    Debug.LogFormat("[Radiator #{0}] Taken {1} from the temperature answer ({2} batteries).", _moduleId, NumTaken, BatteryOrder[1].ToString());
                     Debug.LogFormat("[Radiator #{0}] Temperature is now {1}.", _moduleId, TemperatureAns);
                 }
 
@@ -395,10 +401,11 @@ public class RadiatorRed : MonoBehaviour {
 
     #region Twitch Plays
 #pragma warning disable 414
-    private string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. Reset with !{0} reset.";
-    private string TwitchManualCode = "Radiator";
+    private readonly string TwitchHelpMessage = "Submit the temperature and water together with !{0} submit 12 34. Reset with !{0} reset.";
+    private readonly string TwitchManualCode = "Radiator";
+	private bool UsesVanillaRuleModifierAPI;
 #pragma warning restore 414
-    KMSelectable[] ProcessTwitchCommand(string command)
+	KMSelectable[] ProcessTwitchCommand(string command)
     {
         command = command.ToLowerInvariant().Trim();
         string[] split = command.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); //split the string so we can handle temperature and water seperately

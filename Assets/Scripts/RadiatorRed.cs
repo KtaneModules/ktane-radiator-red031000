@@ -29,7 +29,7 @@ public class RadiatorRed : MonoBehaviour {
 
 	private static int _moduleIdCounter = 1;
     private int _moduleId = 0;
-    private int SerialOccurances = 0;
+    private int SerialOccurrences = 0;
 
     private bool _isSolved = false, _lightsOn = false;
 
@@ -48,9 +48,9 @@ public class RadiatorRed : MonoBehaviour {
 	#endregion
 
 	#region Answer Calculation
-	private int GetSerialOccurances()
+	private int GetSerialOccurrences()
     {
-        int occur = Info.GetSerialNumber().Count(SerialString.Contains); //get every occurance of the string RADI4T07 in the serial number
+        int occur = Info.GetSerialNumber().Count(SerialString.Contains); //get every occurrence of the string RADI4T07 in the serial number
         return occur;
     }
 
@@ -73,6 +73,7 @@ public class RadiatorRed : MonoBehaviour {
 			BatteryOrder = new Battery[] { Battery.D, Battery.AA, Battery.AAx3, Battery.AAx4, Battery.Empty };
 			PortOrder = new Port[] { Port.RJ45, Port.HDMI, Port.Parallel, Port.AC, Port.ComponentVideo, Port.CompositeVideo, Port.DVI, Port.PCMCIA, Port.PS2, Port.Serial, Port.StereoRCA, Port.USB, Port.VGA };
 			GeneralAmounts = new int[] { 50, 20, 40, 10, 2, 25, 1 };
+			UsesVanillaRuleModifierAPI = false;
 		}
 		else
 		{
@@ -88,6 +89,7 @@ public class RadiatorRed : MonoBehaviour {
 			BatteryOrder = new Battery[] { Battery.D, Battery.AA, Battery.AAx3, Battery.AAx4, Battery.Empty }.OrderBy(x => rnd.NextDouble()).ToArray();
 			PortOrder = new Port[] { Port.RJ45, Port.HDMI, Port.Parallel, Port.AC, Port.ComponentVideo, Port.CompositeVideo, Port.DVI, Port.PCMCIA, Port.PS2, Port.Serial, Port.StereoRCA, Port.USB, Port.VGA }.OrderBy(x => rnd.NextDouble()).ToArray();
 			GeneralAmounts = new int[] { 50, 20, 40, 10, 2, 25, 1 }.OrderBy(x => rnd.NextDouble()).ToArray();
+			UsesVanillaRuleModifierAPI = true;
 		}
 		Module.OnActivate += Activate;
 	}
@@ -142,8 +144,8 @@ public class RadiatorRed : MonoBehaviour {
     {
         if (!Generated)
         {
-            SerialOccurances = GetSerialOccurances();
-            Debug.LogFormat("[Radiator #{0}] Serial occurances: {1}.", _moduleId, SerialOccurances);
+            SerialOccurrences = GetSerialOccurrences();
+            Debug.LogFormat("[Radiator #{0}] Serial occurrences: {1}.", _moduleId, SerialOccurrences);
             GenerateAnswer();
             Screen.GetComponent<Renderer>().material = DigitsMat;
             Screen.font = DigitsFont;
@@ -162,25 +164,25 @@ public class RadiatorRed : MonoBehaviour {
         
         //temperature answer
 
-        if (KMBombInfoExtensions.IsIndicatorOn(Info, LitIndicators[0]) && KMBombInfoExtensions.IsIndicatorOn(Info, LitIndicators[1]))
+        if (Info.IsIndicatorOn(LitIndicators[0]) && Info.IsIndicatorOn(LitIndicators[1]))
         { //unicorn
             TemperatureAns = UnicornTempAmount;
             WaterAns = UnicornWaterAmount;
-            Debug.LogFormat("[Radiator #{0}] Answer is unicorn. Horay!", _moduleId);
+            Debug.LogFormat("[Radiator #{0}] Answer is unicorn. Hooray!", _moduleId);
             Debug.LogFormat("[Radiator #{0}] Temperature answer: {1}.", _moduleId, TemperatureAns);
             Debug.LogFormat("[Radiator #{0}] Water answer: {1}.", _moduleId, WaterAns);
         }
         else
         {
-            if (SerialOccurances != 0)
+            if (SerialOccurrences != 0)
             {
 
-                TemperatureAns += (TempMultiplier * SerialOccurances); //find every occurance of letters RADITO and add that * 10 to the number
-                Debug.LogFormat("[Radiator #{0}] Added " + (TempMultiplier * SerialOccurances) + " to the temperature answer (serial occurances).", _moduleId);
+                TemperatureAns += (TempMultiplier * SerialOccurrences); //find every occurrence of letters RADITO and add that * 10 to the number
+                Debug.LogFormat("[Radiator #{0}] Added " + TempMultiplier * SerialOccurrences + " to the temperature answer (serial occurrences).", _moduleId);
                 Debug.LogFormat("[Radiator #{0}] Temperature is now {1}.", _moduleId, TemperatureAns);
             }
 
-            if (!KMBombInfoExtensions.GetBatteryCount(Info).Equals(0))
+            if (!Info.GetBatteryCount().Equals(0))
             {
                 int NumAdded = 0;
                 int NumTaken = 0;
@@ -194,7 +196,7 @@ public class RadiatorRed : MonoBehaviour {
                         NumAdded += BatteryAddAmount;
                     }
                     Debug.LogFormat("[Radiator #{0}] Added {1} to the temperature answer ({2} batteries).", _moduleId, NumAdded, BatteryOrder[1].ToString());
-                    Debug.LogFormat("[Radiator #(0)] Temperature is now {1}.", _moduleId, TemperatureAns);
+                    Debug.LogFormat("[Radiator #{0}] Temperature is now {1}.", _moduleId, TemperatureAns);
                 }
 
                 if (Dnum > 0)
@@ -214,7 +216,7 @@ public class RadiatorRed : MonoBehaviour {
             {
                 TemperatureAns *= -1; //multiply by -1 to make it positive
                 Debug.LogFormat("[Radiator #{0}] Temperature answer is negative, multiplying by -1 to make it positive.", _moduleId);
-                Debug.LogFormat("[Radiator #{0}] Temparature answer is now {1}.", _moduleId, TemperatureAns);
+                Debug.LogFormat("[Radiator #{0}] Temperature answer is now {1}.", _moduleId, TemperatureAns);
    
             }
 
@@ -223,10 +225,10 @@ public class RadiatorRed : MonoBehaviour {
             WaterAns = TemperatureAns / DivideAmount; //cast it automatic, as we're not dividing by a float
             Debug.LogFormat("[Radiator #{0}] Initial water value is {1}.", _moduleId, WaterAns);
 
-            if(KMBombInfoExtensions.IsPortPresent(Info, PortOrder[0]))
+            if(Info.IsPortPresent(PortOrder[0]))
             {
                 WaterAns += GeneralAmounts[0]; //add 50 for RJ-45
-                Debug.LogFormat("[Radiator #{0}] Adding " + GeneralAmounts[0].ToString() + " to the water value (" + PortOrder[0].ToString() + ").", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Adding " + GeneralAmounts[0] + " to the water value (" + PortOrder[0] + ").", _moduleId);
                 Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
 
@@ -241,31 +243,31 @@ public class RadiatorRed : MonoBehaviour {
             if(Info.IsIndicatorOff(UnlitIndicators[0]))
             {
                 WaterAns += GeneralAmounts[2]; //add 40 for unlit bob
-                Debug.LogFormat("[Radiator #{0}] Adding " + GeneralAmounts[2] + " to the water value (unlit " + UnlitIndicators[0].ToString() + ").", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Adding " + GeneralAmounts[2] + " to the water value (unlit " + UnlitIndicators[0] + ").", _moduleId);
                 Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
             if (Info.IsIndicatorOff(UnlitIndicators[1]))
             {
                 WaterAns -= GeneralAmounts[3]; //subtract 10 for unlit nsa
-                Debug.LogFormat("[Radiator #{0}] Taking " + GeneralAmounts[3] + " from the water value (unlit " + UnlitIndicators[1].ToString() + ").", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Taking " + GeneralAmounts[3] + " from the water value (unlit " + UnlitIndicators[1] + ").", _moduleId);
                 Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
             if (Info.IsIndicatorOff(UnlitIndicators[2]))
             {
                 WaterAns += GeneralAmounts[4]; //add 2 for unlit frq
-                Debug.LogFormat("[Radiator #{0}] Adding " + GeneralAmounts[4] + " to the water value (unlit " + UnlitIndicators[2].ToString() + ").", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Adding " + GeneralAmounts[4] + " to the water value (unlit " + UnlitIndicators[2] + ").", _moduleId);
                 Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
             if (Info.IsIndicatorOff(UnlitIndicators[3]))
             {
                 WaterAns += GeneralAmounts[5]; //add 25 for unlit msa
-                Debug.LogFormat("[Radiator #{0}] Adding " + GeneralAmounts[5] + " to the water value (unlit " + UnlitIndicators[3].ToString() + ").", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Adding " + GeneralAmounts[5] + " to the water value (unlit " + UnlitIndicators[3] + ").", _moduleId);
                 Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
             if (Info.IsIndicatorOff(UnlitIndicators[4]))
             {
                 WaterAns -= GeneralAmounts[6]; //subtract 1 for unlit frk
-                Debug.LogFormat("[Radiator #{0}] Taking 1 from the water value (unlit " + UnlitIndicators[4].ToString() + ").", _moduleId);
+                Debug.LogFormat("[Radiator #{0}] Taking 1 from the water value (unlit " + UnlitIndicators[4] + ").", _moduleId);
                 Debug.LogFormat("[Radiator #{0}] Water answer is now {1}.", _moduleId, WaterAns);
             }
 
@@ -326,7 +328,7 @@ public class RadiatorRed : MonoBehaviour {
             {
                 TemperatureInput /= 10;
             }
-            Debug.LogFormat("[Radiator #{0}] Temperature: recieved {1}, expected {2}.", _moduleId, TemperatureInput, TemperatureAns);
+            Debug.LogFormat("[Radiator #{0}] Temperature: received {1}, expected {2}.", _moduleId, TemperatureInput, TemperatureAns);
             if (TemperatureInput == TemperatureAns)
             {
                 Debug.LogFormat("[Radiator #{0}] Temperature correct!", _moduleId);
@@ -346,7 +348,7 @@ public class RadiatorRed : MonoBehaviour {
             {
                 WaterInput /= 10;
             }
-            Debug.LogFormat("[Radiator #{0}] Water: recieved {1}, expected {2}.", _moduleId, WaterInput, WaterAns);
+            Debug.LogFormat("[Radiator #{0}] Water: received {1}, expected {2}.", _moduleId, WaterInput, WaterAns);
 
             if (WaterInput == WaterAns)
             {

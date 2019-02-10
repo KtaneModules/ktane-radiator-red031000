@@ -59,6 +59,7 @@ public class RadiatorRed : MonoBehaviour {
         _moduleId = _moduleIdCounter++;
 		rnd = RuleSeedable.GetRNG();
 		UsesVanillaRuleModifierAPI = rnd.Seed != 1;
+		Debug.LogFormat("[Radiator #{0}] Rule Seed: {1}", _moduleId, rnd.Seed);
 		if (rnd.Seed == 1)
 		{
 			LitIndicators = new Indicator[] { Indicator.FRK, Indicator.BOB, Indicator.CAR, Indicator.CLR, Indicator.FRQ, Indicator.IND, Indicator.MSA, Indicator.NLL, Indicator.NSA, Indicator.SIG, Indicator.SND, Indicator.TRN };

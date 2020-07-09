@@ -207,7 +207,7 @@ public class RadiatorRed : MonoBehaviour {
                         TemperatureAns -= BatterySubtractAmount;
                         NumTaken += BatterySubtractAmount;
                     }
-                    Debug.LogFormat("[Radiator #{0}] Taken {1} from the temperature answer ({2} batteries).", _moduleId, NumTaken, BatteryOrder[1].ToString());
+                    Debug.LogFormat("[Radiator #{0}] Taken {1} from the temperature answer ({2} batteries).", _moduleId, NumTaken, BatteryOrder[0].ToString());
                     Debug.LogFormat("[Radiator #{0}] Temperature is now {1}.", _moduleId, TemperatureAns);
                 }
 
